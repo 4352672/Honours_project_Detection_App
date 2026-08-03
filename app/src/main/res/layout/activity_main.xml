@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0F1117">
@@ -20,14 +19,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="48dp"/>
+        android:layout_marginTop="48dp" />
 
     <!-- Status Pill -->
     <TextView
         android:id="@+id/tvStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ready to scan"
+        android:text=""
         android:textColor="#4CAF50"
         android:textSize="12sp"
         android:paddingHorizontal="16dp"
@@ -36,27 +35,61 @@
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="12dp" />
 
-    <!-- Scan Button -->
+    <!-- Scan Button — pushed toward top third so results have room below -->
     <Button
         android:id="@+id/btnScan"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:text="SCAN"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:letterSpacing="0.15"
         android:backgroundTint="#0D2137"
         android:strokeColor="#2979FF"
         app:strokeWidth="3dp"
-        app:cornerRadius="100dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:cornerRadius="80dp"
+        app:layout_constraintTop_toBottomOf="@id/tvStatus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+        android:layout_marginTop="24dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+    <!-- Divider between scan button and results -->
+    <View
+        android:id="@+id/dividerResults"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#1E2433"
+        app:layout_constraintTop_toBottomOf="@id/btnScan"
+        android:layout_marginTop="20dp" />
+
+    <!-- Empty state placeholder -->
+    <TextView
+        android:id="@+id/tvNoResults"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No results yet — tap Scan"
+        android:textColor="#555D6E"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@id/dividerResults"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Scan results list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvResults"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/dividerResults"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Bottom Bar -->
     <View
@@ -65,43 +98,43 @@
         android:layout_height="1dp"
         android:background="#1E2433"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="80dp"/>
+        android:layout_marginBottom="80dp" />
 
     <!-- Info Button -->
     <Button
         android:id="@+id/btnInfo"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="124dp"
-        android:layout_height="104dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginBottom="24dp"
-        android:backgroundTint="#1A1F2E"
-        android:text="info"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:text="i"
         android:textColor="#90CAF9"
         android:textSize="22sp"
         android:textStyle="bold"
+        android:backgroundTint="#1A1F2E"
+        app:strokeColor="#444444"
+        app:strokeWidth="1.5dp"
         app:cornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="#444444"
-        app:strokeWidth="1.5dp" />
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="24dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
     <!-- Exit Button -->
     <Button
         android:id="@+id/btnExit"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="127dp"
-        android:layout_height="107dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="24dp"
-        android:backgroundTint="#1A1F2E"
-        android:text="Exit"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:text="✕"
         android:textColor="#EF5350"
         android:textSize="20sp"
+        android:backgroundTint="#1A1F2E"
+        app:strokeColor="#444444"
+        app:strokeWidth="1.5dp"
         app:cornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:strokeColor="#444444"
-        app:strokeWidth="1.5dp" />
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="24dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
