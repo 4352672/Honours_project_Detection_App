@@ -27,8 +27,8 @@ class SimilarityChecker {
         }
         for (i in 0..m)dp[i][0]=i
         for (j in 0..n)dp[0][j]=j
-        for (i in 0..m){
-            for (j in 0..n) {
+        for (i in 1..m){
+            for (j in 1..n) {
                 dp[i][j] = if (s1[i - 1] == s2[j - 1]) {
                     dp[i - 1][j - 1]
             }else{

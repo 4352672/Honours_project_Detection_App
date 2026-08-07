@@ -17,8 +17,23 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.app.ActivityCompat
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import java.util.concurrent.TimeUnit
+
 
 class MainActivity : AppCompatActivity() {
+
+    companion object{
+        private const val DAILY_SCAN_TAG = "detector_daily_scan"
+
+        private const val REQUEST_CODE_NOTIFICATIONS = 100
+    }
 
     private lateinit var tvStatus: TextView
 
@@ -47,6 +62,10 @@ class MainActivity : AppCompatActivity() {
        rvResults.adapter = adapter
 
        btnScan.setOnClickListener { onScanClicked() }
+
+        NotificationHelper.createNotificationChannel(this)
+        requestNotificationPermissionIfNeeded()
+        scheduleDailyScan()
 
        loadAppCount()
 
@@ -96,6 +115,21 @@ class MainActivity : AppCompatActivity() {
         runScan()
 
     }
+    private fun requestNotificationPermissionIfNeeded(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ActivityCompat.checkSelfPermission(this,Manifest.permission.POST_NOTIFICATIONS)!= PackageManager.PERMISSION_GRANTED
+        ){
+            ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.POST_NOTIFICATIONS),REQUEST_CODE_NOTIFICATIONS)
+
+        }
+    }
+
+    private fun scheduleDailyScan(){
+        val dailyScanRequest = PeriodicWorkRequestBuilder<DetectorWorker>(24,TimeUnit.HOURS).addTag(DAILY_SCAN_TAG).build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(DAILY_SCAN_TAG,
+            ExistingPeriodicWorkPolicy.KEEP,dailyScanRequest)
+    }
     private fun runScan(){
         btnScan.isEnabled = false
         setStatus("Scanning...","#FFA726")
@@ -111,11 +145,16 @@ class MainActivity : AppCompatActivity() {
             }
             adapter.updateResults(results)
             val flagged = results.count{it.riskLevel != RiskLevel.LOW}
+            val statusColor = if (flagged > 0) "#F44336" else "#4CAF50"
 
             if (results.isEmpty()){
                 rvResults.visibility = View.GONE
                 tvNoResults.visibility = View.VISIBLE
                 val statusColor = if (flagged > 0) "#F44336" else "#4CAF50"
+                setStatus("Scan Complete- $flagged app${if (flagged ==1) "" else "s"}flagged",statusColor)
+            } else {
+                rvResults.visibility = View.VISIBLE
+                tvNoResults.visibility = View.GONE
                 setStatus("Scan Complete- $flagged app${if (flagged ==1) "" else "s"}flagged",statusColor)
             }
             btnScan.isEnabled = true

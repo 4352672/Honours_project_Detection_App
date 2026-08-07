@@ -3,13 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools">
     <!--This will be used for scanning all of the installed packages-->
     <uses-permission
-
         android:name="android.permission.QUERY_ALL_PACKAGES"/>
 
     <!--This will be used for the usage stats access-->
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions"/>
+
+    <!--This will be used to post a daily scan alert notification-->
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <!--This is needed for WorkManager's background scheduling-->
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <!--This will be used to read the network usage per App-->
     <uses-permission
@@ -32,6 +39,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+
+        </provider>
     </application>
 
 </manifest>
