@@ -9,6 +9,7 @@ data class AppScanResult (
     val riskLevel:RiskLevel = RiskLevel.LOW,
     val spywareProbability: Int =0,
     val networkStats: NetworkStats? = null,  //null if PACKAGE_USAGE_STATS
-    val networkScoreAddition: Int=0 //Additional score contributed by network signals
+    val networkScoreAddition: Int=0, //Additional score contributed by network signals
+    val batteryScoreAddition: Int=0//Additional score contributed by battery signals
 
 )
