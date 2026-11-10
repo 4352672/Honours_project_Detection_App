@@ -13,7 +13,7 @@ object WhiteList {
         "com.whatsapp",
         "org.telegram.messenger",
         "com.facebook.orca",
-        "com.discord",
+        "com.example.detectionapptester.detectionapp2.detectionapp.app",
         "com.google.android.gm",
         "com.google.android.apps.maps",
         "com.android.chrome",
